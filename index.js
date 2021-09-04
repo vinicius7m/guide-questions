@@ -5,7 +5,7 @@ const port = 8080;
 const bodyParser = require('body-parser');
 
 const connection = require('./database/database');
-const perguntaModel = require('./database/Pergunta');
+const Pergunta = require('./database/Pergunta');
 
 // Database
 connection
@@ -42,11 +42,12 @@ app.post('/salvar-pergunta', (req, res) => {
 
     var titulo = req.body.titulo;
     var descricao = req.body.descricao;
-
-    res.json({
-        msg: "Dados enviados com sucesso!",
-        titulo,
-        descricao
+    // INSERT INTO
+    Pergunta.create({
+        titulo: titulo,
+        descricao: descricao,
+    }).then(() => {
+        res.redirect("/");
     });
 });
 

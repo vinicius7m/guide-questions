@@ -30,3 +30,5 @@ Pergunta.sync({ force: false }).then(() => {
 });
 // { force: false } - Não "força" a criação da tabela, quando já criada
 // model.sync(options)
+
+module.exports = Pergunta;
