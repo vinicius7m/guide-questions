@@ -31,8 +31,11 @@ app.use(bodyParser.json());
 
 // Rotas
 app.get('/', (req, res) => {
-    // findAll() - SELECT * FROM `perguntas`
-    Pergunta.findAll({ raw: true }).then(perguntas => {
+    // findAll({raw, order}) - SELECT * FROM `perguntas`
+    // order: [['column', 'asc/desc']] - order by
+    Pergunta.findAll({ raw: true, order: [
+        ['id', 'DESC']  
+    ] }).then(perguntas => {
         res.render('index', {
             perguntas: perguntas        
         });
@@ -53,6 +56,23 @@ app.post('/salvar-pergunta', (req, res) => {
         descricao: descricao,
     }).then(() => {
         res.redirect("/");
+    });
+});
+
+app.get("/pergunta/:id", (req, res) => {
+    var id = req.params.id;
+
+    // select * from perguntas where id = 1;
+    Pergunta.findOne({
+        where: { id: id }   
+    }).then(pergunta => {
+        if(pergunta != undefined) { // Pergunta encontrada
+            res.render("pergunta", {
+                pergunta: pergunta,
+            });
+        } else { // Não encontrada
+            res.redirect("/");
+        }
     });
 });
 
