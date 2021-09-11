@@ -51,7 +51,7 @@ app.post('/salvar-pergunta', (req, res) => {
 
     var titulo = req.body.titulo;
     var descricao = req.body.descricao;
-    // INSERT INTO
+    // INSERT INTO create({ columns: values }).then() - Promise
     Pergunta.create({
         titulo: titulo,
         descricao: descricao,
@@ -74,6 +74,18 @@ app.get("/pergunta/:id", (req, res) => {
         } else { // Não encontrada
             res.redirect("/");
         }
+    });
+});
+
+app.post("/responder", (req, res) => {
+    var corpo = req.body.corpo;
+    var perguntaId = req.body.pergunta
+
+    Resposta.create({
+        corpo: corpo,
+        perguntaId: perguntaId,
+    }).then(() => {
+        res.redirect(`/pergunta/${perguntaId}`);
     });
 });
 
